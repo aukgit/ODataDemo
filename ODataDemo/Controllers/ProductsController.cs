@@ -21,9 +21,6 @@ namespace ODataDemo.Controllers
     using ODataDemo.Models;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
     builder.EntitySet<Product>("Products");
-    builder.EntitySet<Category>("Categories"); 
-    builder.EntitySet<OrderDetail>("OrderDetails"); 
-    builder.EntitySet<Supplier>("Suppliers"); 
     config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
     */
     public class ProductsController : ODataController
@@ -141,27 +138,6 @@ namespace ODataDemo.Controllers
             db.SaveChanges();
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // GET: odata/Products(5)/Category
-        [Queryable]
-        public SingleResult<Category> GetCategory([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Products.Where(m => m.ProductID == key).Select(m => m.Category));
-        }
-
-        // GET: odata/Products(5)/OrderDetails
-        [Queryable]
-        public IQueryable<OrderDetail> GetOrderDetails([FromODataUri] int key)
-        {
-            return db.Products.Where(m => m.ProductID == key).SelectMany(m => m.OrderDetails);
-        }
-
-        // GET: odata/Products(5)/Supplier
-        [Queryable]
-        public SingleResult<Supplier> GetSupplier([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Products.Where(m => m.ProductID == key).Select(m => m.Supplier));
         }
 
         protected override void Dispose(bool disposing)

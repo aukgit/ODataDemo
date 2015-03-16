@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.OData.Builder;
+using ODataDemo.Models;
 
 namespace ODataDemo {
     public static class WebApiConfig {
@@ -16,6 +18,11 @@ namespace ODataDemo {
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Product>("Products");
+   
+            config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }
